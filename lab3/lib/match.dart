@@ -82,9 +82,9 @@ class Match extends Sport
 
   static Stream<int> getStreamData() async* {
     yield 1;
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     yield 2;
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     yield 3;
   }
 

@@ -10,6 +10,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  String _selectedButtonText = "UI DESIGN";
+
   List<App> cardWithInformationAboutApp = [
     App("Hotel Booking App", "text"),
     App("Financial App", "text"),
@@ -40,10 +42,10 @@ class MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.all(8),
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    createContainerWithElevatedButton("UI DESIGN"),
-                    createContainerWithElevatedButton("UX RESEARCH"),
-                    createContainerWithElevatedButton("BRANDING"),
-                    createContainerWithElevatedButton("SOCIAL")
+                    createContainerWithTextButton("UI DESIGN"),
+                    createContainerWithTextButton("UX RESEARCH"),
+                    createContainerWithTextButton("BRANDING"),
+                    createContainerWithTextButton("SOCIAL")
                   ],
                 ))),
         Container(
@@ -104,7 +106,11 @@ class MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Container createContainerWithElevatedButton(String text) {
+  Container createContainerWithTextButton(String text) {
+    Color _buttonColor = Color.fromARGB(255, 116, 116, 116);
+    if (_selectedButtonText == text) {
+      _buttonColor = Color.fromARGB(255, 0, 0, 0);
+    }
     return Container(
         height: 50,
         width: 250,
@@ -114,8 +120,16 @@ class MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               setState(() {
                 cardsInformation(text);
+                if (_selectedButtonText == text) {
+                  _selectedButtonText = "";
+                } else {
+                  _selectedButtonText = text;
+                }
               });
             },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: _buttonColor,
+            ),
             child: Text(text),
           ),
         ));
@@ -142,13 +156,17 @@ class MyHomePageState extends State<MyHomePage> {
               cardWithInformationAboutApp[index].description,
               22.0,
               [255, 255, 255, 255],
-              FontWeight.w200)
+              FontWeight.w200),
+          Image.network(
+            "https://www.pngplay.com/wp-content/uploads/7/Apple-IPhone-Mobile-Transparent-Background.png",
+            height: 450,
+          )
         ],
       ),
     );
   }
 
-  Container createCardInOurPricing() {
+  Container createCardInOurPricing(String title, String description) {
     return Container(
       height: 250,
       width: 250,
@@ -158,12 +176,26 @@ class MyHomePageState extends State<MyHomePage> {
           border: Border.all(
               width: 1, color: const Color.fromARGB(255, 102, 151, 145))),
       margin: const EdgeInsets.only(top: 30, left: 30, right: 30),
+      padding: const EdgeInsets.only(top: 20, left: 30),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 231, 236, 236),
+                borderRadius: BorderRadius.circular(45),
+                border: Border.all(
+                    width: 1, color: const Color.fromARGB(255, 231, 236, 236))),
+            child: const Icon(Icons.inbox),
+          ),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
           ApplicationConcerns.createTextWithOptions(
-              "Hotel Booking App", 35.0, [255, 255, 255, 255], FontWeight.w500),
+              title, 25.0, [255, 255, 255, 255], FontWeight.w500),
           ApplicationConcerns.createTextWithOptions(
-              "Text 2", 22.0, [255, 255, 255, 255], FontWeight.w200)
+              description, 15.0, [255, 255, 255, 255], FontWeight.w200)
         ],
       ),
     );
@@ -217,7 +249,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   Container createContainerInFooterButtonOurPricing() {
     return Container(
-      height: 400,
+      height: 450,
       padding: const EdgeInsets.only(left: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -229,18 +261,21 @@ class MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              createCardInOurPricing(),
-              createCardInOurPricing(),
-              createCardInOurPricing()
+              createCardInOurPricing("Branding", "Text"),
+              createCardInOurPricing("Visual Design", "Text"),
+              createCardInOurPricing("Digital marketing", "Text")
             ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "/our_pricing", (route) => true);
-            },
-            child: const Text("More information"),
-          )
+          Container(
+              alignment: Alignment.bottomRight,
+              padding: const EdgeInsets.only(top: 20, right: 30),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/our_pricing", (route) => true);
+                },
+                child: const Text("More information"),
+              )),
         ],
       ),
     );
